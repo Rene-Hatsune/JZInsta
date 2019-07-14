@@ -10,3 +10,7 @@ class Post(models.Model):
         blank = True,
         null=True,
         )
+    def _str_(self):
+        return self.title
+
+# Content Management System
