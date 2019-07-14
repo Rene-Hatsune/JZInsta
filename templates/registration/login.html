@@ -1,0 +1,8 @@
+<div>
+    <h1>Login</h1>
+    <form method="post" >
+        {% csrf_token %} {% comment %} prevent from attack {% endcomment %}
+        {{ form.as_p }}
+        <button type="submit"> LogIn </button>
+    </form
+</div>

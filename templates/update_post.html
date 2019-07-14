@@ -1,0 +1,8 @@
+<div>
+    <h1>Update Post</h1>
+    <form action="" method="post" enctype="multipart/form_data">
+        {% csrf_token %} {% comment %} prevent from attack {% endcomment %}
+        {{ form.as_p }}
+        <button type="submit"> Save </button>
+    </form>
+</div>
