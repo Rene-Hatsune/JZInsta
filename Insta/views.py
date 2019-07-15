@@ -14,7 +14,7 @@ class HelloDjango(TemplateView):
 
 class PostView(LoginRequiredMixin, ListView):
     model = Post
-    template_name = 'posts.html'
+    template_name = 'index.html'
     login_url = 'login'
 
 class PostDetail(DetailView):
@@ -36,8 +36,38 @@ class PostDeleteView(DeleteView):
     template_name = "delete_post.html"
     success_url = reverse_lazy('post')
   
-
 class SignupView(CreateView):
-    form_class = UserCreationForm
+    form_class = CustomUserCreationForm
     template_name = "registration/signup.html"
     success_url = reverse_lazy('login')
+
+
+class UserProfile(LoginRequiredMixin, DetailView):
+    model = InstaUser
+    template_name = 'user_profile.html'
+    login_url = 'login'
+
+
+class EditProfile(LoginRequiredMixin, UpdateView):
+    model = InstaUser
+    template_name = 'edit_profile.html'
+    fields = ['profile_pic', 'username']
+    login_url = 'login'
+
+@ajax.request
+def addLike(request):
+    post_pk = request.POST.get('post_pk')
+    post = Post.objects.get(pk=post_pk)
+    try:
+        like = Like(post=post, user=request.user)
+        like.save()
+        result = 1
+    except Exception as e:
+        like = Like.objects.get(post=post, user=request.user)
+        like.delete()
+        result = 0
+
+    return {
+        'result': result,
+        'post_pk': post_pk
+    }
